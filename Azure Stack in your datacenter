@@ -1,0 +1,61 @@
+Presented by:
+
+Ravisankar N | https://www.linkedin.com/in/ravisn/
+February 25, 2017
+
+—> Introduction
+—> Microsoft Azure Stack (MAS) Architecture
+—> Hyper-converged architecture
+—> Windows Server 2016 Services
+—> Azure Stack Demo
+—> Open Discussion
+
+2012 - 2014
+Windows Server 2012: VMM, OMM, Orchestrator.
+ASM framework was the foundation for WAP.
+WAP: Portal front end and API backend. Two portals: Provider and Consumer self-service.
+WAP offers (through Ascert?) API to enable connectivity with multiple resource providers like Amazon, Google Cloud Platform, IBM BlueMix, etc., to be managed using a single pane of glass.
+
+WAP was complicated enough to have MS involved in enterprise integration. It requires PowerShell Development Toolkit to simplify the implementation process.
+Not too many services were available, with no integration with its public cloud counterpart.
+It is feeble and involves deploying too many products for realising its use.
+
+Microsoft Azure Stack is in Technical Preview 2 with GA expected by June 2017.
+
+2015 - Present
+Azure Stack is southbound, meaning it does not provide Resource Provider to talk to any other providers except Azure cloud.
+Microsoft Azure (Public Cloud) does not perform software updates to the OS; instead, it replaces it with an updated image. However, Azure Stack (Private Cloud) continues to allow manual updates of the OS images individually, but in a more automated way, using CAU (Ships with Windows Server Failover Cluster).
+
+Hyper-converged architecture
+Hyper-converged: Compute+Storage+Network combined into a single logical unit. Everything is local in this parlance, with no additional devices/intelligence required to connect the individual-independent parts. WSFC is being leveraged in here, it seems. The next hop would be to the DC Network / WAN. 
+SDDC: Hyper-converged + Datacenters and leveraging WAN to combine these into a single atomic unit.
+
+Storage Spaces: Explore about this. Available with Windows Server 2012 R2/2016; Servers attached to enclosures through SAS. Storage Spaces: Volume equivalent of SAN era. JBOD enclosure(s) is at the foundation.
+Storage Spaces Direct: Attached directly and not wired, aggregated by pooling storage spaces across multiple servers by grouping them together in a cluster.
+Enclosure Awareness: Helps ensure availability of data through redundancy across storage units spanning servers.
+Media tagging of the virtual disks (VHDs) is also possible.
+Performance: Azure storage systems is based on Hot-rodded virtualisation layer. Geo-replication is possible in private cloud using Storage Replica feature available with MSW server 2016. 
+Storage tiering, wherein data can be dynamically moved in or out of faster storage when required. For more performance, storage pinning feature can also be leveraged.
+
+Windows Server 2016: iDNS, hosting customer own DNS.
+Earlier NVGRE/VXLAN support provided. Starting 2016, VXLAN is enabled by default, to ease VMware workloads migration into Azure Stack.
+
+Data de-duplication (Different than single instance storage of Unix/Linux world) and QoS policies can be implemented, corresponding to Azure public cloud VM T-Shirt categories.
+Storage Controllers and Connectors: Specialised MSW computers with appropriate adapters, connected to compute network, Ethernet (No more SAN and LAN) and accessible via SMB.
+
+Azure Stack system requirements
+Azure Stack TP2 - 20 GB, consisting of SQL/Win ISOs, 2012/2016 images.
+Min 36 GB RAM, 16 vCPUs, 200 GB System and 4 * 200 Data disks. Min 1 NIC connected to the internet. Not to use some subnets belonging to reserved IP space
+3 VM, 1 with 500 MB, 1 with 2 vCPU, 2 TB Memory and 4 * 128 GB data disks for Storage Spaces VM.
+Do not cohost (Configuring as a hosted install on top of an existing system). Install it directly on top of the server hardware, to avoid possible glitches during boot up.
+
+SDDN capabilites
+Network controller: address assignment and management.
+SDLB: supports 5 tuple addressing.
+Two RDMA NICs can be teamed for redundancy by leveraging Azure switches instead of the OS. This is available from 2016 onward.
+MGMT|Transit|HNV vLANs segregation, similar to the Triple-network architecture offered by IBM SoftLayer and others.
+
+Azure Stack Portal: portal.azurestack.local 
+When Azure Stack is GA, provisioning to Azure shall be made available, besides local target.
+Licensing: Platform systems are not licensed, but the VMs hosted on the are. IaaS could be straightforward but Paps estimations need planning.
+The “Plan” feature helps constrict usage to preset resource lmits. Hence the introduction of T-Shirt sizes to have checks and balances to avoid accidental creation of high VMs that may become noisy neighbours or hitch the underlying cloud system due to exorbitant resource requirements. This feature has to be backed by continual monitoring besides categorical metering, to have the resources UP-ed before the system hits the hard limit.
