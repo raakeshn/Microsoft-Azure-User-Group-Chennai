@@ -1,0 +1,41 @@
+Host/Presenter: Krishnanand Sivaraj
+
+Why do we need to study chatbots?
+Microsoft way of building bots. MS Bot framework is not the only framework, but MS entered early in the market.
+Hands on demo: Creating a chatbot with code and without code
+Merits and demerits of chatbots
+Artificial intelligence
+
+What you are about to see in the next one hour is how the web will be in the near future?
+
+Everything that is web is artificially intelligent. If an application is not able to predict or make decisions then the become fast obsolete. Home pages/web pages could be the thing of the past, pretty soon.
+The future is all about conversational UI.
+Everything is disconnected now in the flow of business. There is no single UI for all user needs, which is what chatbot is essentially about.
+Applications on the conversational UI is on the increase, replacing the typical blog applications.
+
+MS developed LUIS algorithm (one of the top performing frameworks) to enable bots to learn new stuff. Others are Cortana, speech APIS, cognitive services. Chatbots are for the enterprise market too.
+
+Chatbots need to be trained a lot. They may piss you off due to lack of context/intuition of poor accent.
+Realtime use case: Signing versions as minor or major based on verifying build number can be effectively done by automating using chat bots.
+Chatbots shall be integrated with typical chat tools such as Skype, Lynx, Messenger, Office Apps, etc. While the framework is free the applications or plugins could be priced.
+Example apps: SkyScanner bot, Florence, Hacker news.
+
+Chatbot framework allows development based on C#, JavaScript, node.JS, to make it adaptable for future market.
+Bot framework shall be integrated with VS, works with VS2015 SP1.
+MS competes severely with Java. A lot of features are introduced much earlier in .NET framework.
+.NET Rocks is available as a mobile podcast application, available with iOS.
+
+Chatbots shall be able to interact with databases.
+Bots shall be written in C#/Java, exposed as web services and integrated with LUIS.
+Azure SDK, Azure subscription, VS2015, and bot framework (and emulator?) is needed for developing bots. More information at dev.botframework.com. App ID and password is needed for accessing bots. This ID is generated during creation of the bots. The App password need to be deleted prior to creating new. This is to avoid possible compromise.
+
+Web.config setup prior to developing and building a bot is important.
+Chatbot targets can be App Service Plans, to be integrated with web, api, mobile, and functional apps. The App URL must be keyed into the bot framework, for proper integration.
+
+Develop bots in dev.botframework.com and publish as <botnameprefix>.azurewebsites.net
+QNAmaker.ai is a bot app development application instead of using VS and Azure. Create bot without a single line of code also, with bot.
+
+Bots shall be made more intelligence or enable them learn by integrating your bot app with LUIS, www.luis.ai. This is essentially a key-word based search. This is more or less similar to Google voice search using a web interface. LUIS works with 1. Utterances, 2. Intends, and 3. Entities.
+
+Azure bot service + Azure bot framework + QNA maker = bots without coding
+Author has developed a product named TapestryKPI. He is a lead engineer (Products) at Softcrylic.
