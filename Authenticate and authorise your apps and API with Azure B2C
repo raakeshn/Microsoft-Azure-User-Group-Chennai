@@ -1,0 +1,29 @@
+No coding for authentication (login page) anymore.
+MS is the most hit website, hence continually learning and improving Azure AD based security.
+
+Code obfuscation is a method to secure the code, besides external protection such as Azure AD, Firewall, IDS/IPS etc.
+
+B2B requires stringent security in terms of whitelisting the users/candidates  by hardcoding in Azure AD, that will help the external business vendor or service provider access the organisation/enterprise application.
+B2C has no such restriction and can authenticate and authorise based on TPP credentials.
+B2C serves more users, in all categories, and a public provider. Contrarily, B2B serves limited users, mostly select users within an organisation or enterprise.
+B2B is more for IT Pros and B2C for Deve.
+
+Login request to App —> AAD logon —> OAuth token, reply URL shared with the app, and then the app shares the URL and bearer token to the requested user with which they can start accessing the application.
+
+A subscription can have multiple tenants and each tenant is essentially an independent Azure AD authentication module for a select set of users or groups.
+Azure AD has configurable policies which help setup authentication, fetching specific information from users, and other contextual information needed to process further. These are being shared with the user in terms of templates/forms without having to develop an exclusive front-end webpage.
+Implicit authentication has close ties with SSO. Hence, if there is restrictions in terms of which modules of an application can be accessed post authentication, those tenants have to be segregated into different tenants under the same subscription, so as to enforce access control based on authentication.
+
+While system-wide authentication (infrastructure services) can be done by leveraging WMI, application-wide authentication (platform services) has to be handled by each application, separately.
+
+Custom web pages can be used to replace default AD authentication page (login.microsoftonlne.com), based on the organisation needs.
+
+B2C —> use Hello.JS
+B2B —> use ADAL
+AD B2C and AD B2B URL’s are different
+
+App.JS in the JavaScript is the same we Web.config in the .NET world.
+
+Web pages’ JWT tokens can be decoded online using Caleb.net
+
+Security wise, application data exposure vulnerability shall be addressed using beard token expiry mechanism and programming methods like minify.
