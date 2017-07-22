@@ -1,0 +1,99 @@
+Configuring Point to Site connection to Azure VNet: Required information
+************************************************************************
+--> Gateway Subnetwork (To deploy the Azure VPN Gateway VM and related services to maintain the various connection configurations)
+Refer the following for details and best practices in creating and configuring Azure VPN gateway:
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings
+https://blogs.technet.microsoft.com/solutions_advisory_board/2016/12/01/calculating-the-gateway-subnet-address-space-for-azure-virtual-networks/
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-vpn-faq
+--> Dynamic Gateway IP (Assigned by Azure!)
+--> Pre Shared Key (This will be part of the security certificate (.CER) generated at client and uploaded to Azure VPN gateway)
+--> Gateway Type – Routebased or Policybased. Please refer the following for configuration details and best practices:
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-connect-multiple-policybased-rm-ps
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways
+--> VPN Type – VPN or ExpressRoute
+--> Gateway SKU – Basic, Standard or High Performance. More information on Gateway SKUs for VPN and ExpressRoute follows:
+https://docs.microsoft.com/en-us/azure/expressroute/expressroute-about-virtual-network-gateways
+https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpngateways
+Client address pool: Configure a network address (CIDR block) to let Azure VPN gateway dynamically assign an IP address to  the client/endpoint while establishing the Point to site VPN connection. This will be the endpoint's IP as seen at Azure VNet end during the specific VPN session.
+
+Adding certificate to Azure VPN Gateway for establishing a Point to Site connection
+***********************************************************************************
+Create VPN Certificate
+
+Launch “Developer Command Prompt for VS2015”, and generate the root certificate and subsequently the client certificate using the root certificate.
+
+C:\>makecert -sky exchange -r -n "CN=OpAzrCnctRootCert4" -pe -a sha1 -len 2048 -ss My "OpAzrCnctRootCert4.cer"
+
+-sky: Subject key type: <signature|exchange|<integer>>
+-r: Creates a self-signed certificate.
+-n: Specifies the subject's certificate name. This name must conform to the X.500 (ITU) standard. The simplest method is to specify the name in double quotes, preceded by CN=; for example, -n "CN=myName".
+-pe: Marks the generated private key as exportable. This allows the private key to be included in the certificate.
+-a: Specifies the signature algorithm. algorithm must be md5, sha1 (the default), sha256, sha384, or sha512.
+-len: Specifies the generated key length, in bits.
+-ss: Specifies the subject's certificate store name that stores the output certificate.
+
+C:\>makecert -n "CN=OpAzrCnctClientCert4" -pe -sky exchange -m 96 -ss My -in "OpAzrCnctRootCert4" -is my -a sha1
+
+-m: Specifies the duration, in months, of the certificate validity period.
+-in: Specifies the issuer's certificate common name.
+-is: Specifies the issuer's certificate store name
+
+Export the client certificate to the other On-premises client systems, in case multiple client systems (aka endpoints) are involved.
+
+Add the VPN client Root certificate to the VPN Gateway.
+
+Setting up Hybrid Network and configuring Windows AD in a multi-forest scenario
+*******************************************************************************
+1. Extending some of the services/systems at On-Premise Data Center to Azure.
+2. Bursting onto Azure.
+3. Hosting an existing/new business system in Azure and connect back with services hosted On-Premise enterprise business systems, to achieve an organization's holistic business goal.
+
+Scenario: Setup two independent Active Directory forests, on On-Premise and another on Azure (IaaS) in a Two-Way Forest-Wide trust, and perform a simple test of cross forest file share.
+
+Problem Statement:
+
+--> Point to Site is fundamentally a One Way communication medium, where there is a Point or a single instance (Desktop/Server) establishing connection with Site or an independent LAN situated remotely.
+--> Site to Site VPN, which is fundamentally a Two Way communication medium, involves additional hardware and special configuration at On-Premise end, which is not feasible in many of the business situations, given the limited timelines/budget to realize a transformative solution.
+--> Point to Site can be leveraged in such business situations, by working around its technical limitations in the following manner:
+
+Steps
+1. Install a VM in Azure. Configure the VM's NIC allocation method property to be static. This is because, all Azure VM IPs are configured Dynamic, be default.
+
+2. Setup AD Forest On-Premise and on Azure.
+
+3. Configure Point to Site connection between On-Premise and Azure networks.
+
+4. Configure the network DNS settings as follows:
+
+On-Premise NIC
+Preferred DNS: Local Loop Back IP Address
+Alternate DNS: DC VM Static IP in Azure VNet
+
+Azure VNet DNS Configuration:
+Primary: DC VM Static IP in Azure VNet
+Secondary: On-Premise VPN Client IP Address
+
+Note: The VPN Client IP address changes every time the Point to Site connection drops. Hence, please ensure the following are intact, whenever there is a VPN reconnect.
+Changes in the DC VM  in Azure
+Azure VM --> DNS Manager --> Server Properties --> Forwarders --> On-Premise VPN Client IP Address
+Secondary DNS Server setting in Azure VNet DNS Configuration.
+
+5. Add the DC Forest in Azure into a two-way transitive trust relationship inside On-Premise DC, from within its Active Directory Domains and Trusts UI.
+
+6. Create an AD user account On-Premise and on Azure DC. Create a file share on the DCs at either side of the VPN tunnel. Provide On-Premise AD user account access to the file share in Azure DC and 
+vice versa. A rule of thumb is to use "user name@domain suffix" format and not the usual "Domain\User Name" format while searching for the cross-forest AD user. Test the file share access by creating a file and entering some content and review those changes from the other side.
+
+Placement of the Windows Server AD DS database and SYSVOL
+*********************************************************
+Select where to locate the Windows Server AD DS database, logs, and SYSVOL. They must be deployed on Azure Data disks. “
+Note
+Azure Data disks are constrained to 1 TB.
+Data disk drives do not cache writes by default. Data disk drives that are attached to a VM use write-through caching. Write-through caching makes sure the write is committed to durable Azure
+storage before the transaction is complete from the perspective of the VM’s operating system. It provides durability, at the expense of slightly slower writes.
+This is important for Windows Server AD DS because write-behind disk-caching invalidates assumptions made by the DC. Windows Server AD DS attempts to disable write caching but it is up to the disk IO
+system to honor it. Failure to disable write caching may, under certain circumstances, introduce USN rollback resulting in lingering objects and other problems.
+As a best practice for virtual DCs, do the following:
+Set the Host Cache Preference setting on the Azure data disk for NONE. This prevents issues with write caching for AD DS operations.
+Store the database, logs, and SYSVOL on the either same data disk or separate data disks. Typically, this is a separate disk from the disk used for the operating system itself. The key takeaway is that the 
+Windows Server AD DS database and SYSVOL must not be stored on an Azure Operating System disk type. By default, the AD DS installation process installs these components in %systemroot% folder, which is NOT recommended for Azure.
