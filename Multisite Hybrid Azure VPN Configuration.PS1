@@ -8,6 +8,7 @@ Login-AzureRmAccount
 #Select-AzureRmProfile -Path <Drive\Path\azurermprofile.json>
 Get-AzureRmSubscription
 #Select-AzureRmProfile -Path <Drive\Path\azurermprofile.json>
+Select-AzureRmSubscription -SubscriptionName <'Registered subscription name'> -TenantId <alphanumeric code>
 
 #Record existing powershell ISE environment variables
 $ExistingVariables = Get-Variable | Select-Object -ExpandProperty Name
