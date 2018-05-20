@@ -1,0 +1,27 @@
+- Top down and bottom up combined for dynamic business management
+- Seasonal and phase based scaling of specific modules or resources
+- Organisation hierarchy crumbles and becomes flat
+- Two pizza’s role applies and advancing to one per team, Ninja developers
+- Throwing people at problems cannot speed up the deployment of a code or implement it
+- The phoenix project book is the best read to build working business solution for the customer
+- Amazon wants your purchase experience to be faster so as to make you not think. There is a system 1 and system 2 and you will be pushed to system 1 as described in Think fast and slow
+- Microservices is not an elixir but gives more power to solve problems
+- It need not be small. Number of lines of code does not matter. Understanding business domain and requirement drives the segregation and separation of code
+- In a way, it is about splitting 1000 lines of total code for fulfilling the business requirement into 200*5 so as to derive the infrastructure requirement. But you may be fooled, for the 5 * 200 liens codes’ may not run on the same application stack
+- Do not start big. Thinking premature in Microservices will not help. Understand monolith build method before implementing Microservices based solution
+- .NET rocks podcast (https://www.dotnetrocks.com), every .NET developer must listen to. One interesting podcast I started listening is “Talking C# with Bill Wagner and Jon Skeet” https://secure-hwcdn.libsyn.com/p/b/4/b/b4bf48698e83e1e3/dotnetrocks_1521_talking_csharp_with_bill_wagner_and_jon_skeet.mp3?c_id=19215418&cs_id=20435983&expiration=1526746611&hwt=9362274df130a391db94508f69859f95
+- Pain driven development: Automate the task or activity which is painful. Enabling logs for easier troubleshooting by Dev or IT Pro is an example
+- Be current on technology matters in terms of concepts, jargons. You cannot know everything before starting a project, after all
+- Cost increase is a good problem which one must have and Microservices cannot not be adopted to solve those problems. Cost reduction could be a side effect, in some cases
+- Microservices cannot exist or sustain without automation
+- Principles: Non-disruptive, continuous improvement (kaiser method), modular, non-disruptive changes, do not combine unrelated entities and do not separate related entities
+- Responsibility and boundary. Your boundary defines your responsibility. Else it becomes a chatty conversation due to overlap of functions.
+- Duplication is not evil. You need not expose your code to make it common. Building Microservices is easier than monolith apps.
+- Orchestration vs choreography: orchestration is complicated but choreography is simple. Synch vs Asynch. Orchestration is easier to troubleshoot. Semantic monitoring
+- ’Tis not about breaking the code but also the database. One method could be to remove the data identifier logic from the database and include as a logic in the code. Make the database less intelligent / dumb and make it modular
+- Strip off intelligence from sql and imbibe into logic code. No-sql is the way to go for 90% of apps
+- Conway’s law and system design: People tend to think and lead based on their trade practice
+- Most of the web service and restful api service can be candidate for no-sql
+- Movie References: 
+    * Ex Machina - watch for free at https://www4.fmovies.se/film/ex-machina.y3j1/1o93nv
+    * The Matrix - watch for free at https://www4.fmovies.se/film/the-matrix.jv58/xx8r8q
