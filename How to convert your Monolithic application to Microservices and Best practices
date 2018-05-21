@@ -4,7 +4,7 @@
 - Two pizza’s role applies and advancing to one per team, Ninja developers
 - Throwing people at problems cannot speed up the deployment of a code or implement it
 - The phoenix project book is the best read to build working business solution for the customer
-- Amazon wants your purchase experience to be faster so as to make you not think. There is a system 1 and system 2 and you will be pushed to system 1 as described in Think fast and slow
+- Amazon wants your purchase experience to be faster so as to make you not think. There is a system 1 and system 2 and you will be pushed to system 1 as described in "Thinking, Fast and Slow" by Kahneman, Daniel
 - Microservices is not an elixir but gives more power to solve problems
 - It need not be small. Number of lines of code does not matter. Understanding business domain and requirement drives the segregation and separation of code
 - In a way, it is about splitting 1000 lines of total code for fulfilling the business requirement into 200*5 so as to derive the infrastructure requirement. But you may be fooled, for the 5 * 200 liens codes’ may not run on the same application stack
